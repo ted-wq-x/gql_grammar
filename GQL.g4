@@ -33,7 +33,7 @@ endTransactionCommand
 // 7.1 <session set command>
 
 sessionSetCommand
-    : SESSION SET (sessionSetSchemaClause | sessionSetGraphClause | sessionSetTimeZoneClause | sessionSetParameterClause)
+    : ((SESSION SET) | (SET SESSION)) (sessionSetSchemaClause | sessionSetGraphClause | sessionSetTimeZoneClause | sessionSetParameterClause | sessionSetQueryLangClause)
     ;
 
 sessionSetSchemaClause
@@ -73,7 +73,15 @@ sessionSetValueParameterClause
 sessionSetParameterName
     : (IF NOT EXISTS)? sessionParameterSpecification
     ;
+//--start 自定义参数
+sessionSetQueryLangClause
+    : QUERY PERIOD LANG setQueryLangValue
+    ;
 
+setQueryLangValue
+    : EQUALS_OPERATOR characterStringLiteral
+    ;
+//--end
 // 7.2 <session reset command>
 
 sessionResetCommand
@@ -3509,6 +3517,9 @@ YIELD: 'YIELD';
 ZONED: 'ZONED';
 ZONED_DATETIME: 'ZONED_DATETIME';
 ZONED_TIME: 'ZONED_TIME';
+
+// 自定义添加的
+LANG: 'LANG';
 
 // Prereserved words
 ABSTRACT: 'ABSTRACT';
