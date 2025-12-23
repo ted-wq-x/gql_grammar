@@ -79,7 +79,11 @@ sessionSetQueryLangClause
     ;
 
 setQueryLangValue
-    : EQUALS_OPERATOR characterStringLiteral
+    : EQUALS_OPERATOR queryLangString
+    ;
+
+queryLangString
+    : characterStringLiteral
     ;
 //--end
 // 7.2 <session reset command>
