@@ -93,6 +93,7 @@ sessionResetArguments
     | SCHEMA
     | PROPERTY? GRAPH
     | TIME ZONE
+    | QUERY PERIOD LANG
     | PARAMETER? sessionParameterSpecification
     ;
 
