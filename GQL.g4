@@ -501,9 +501,26 @@ compositeQueryStatement
 
 // 14.2 <composite query expression>
 
+// compositeQueryExpression
+//    : compositeQueryExpression queryConjunction compositeQueryPrimary
+//    | compositeQueryPrimary
+//    ;
+
+// 14.2 Syntax rule 4: "focused statements and ambient statement are mutually exclusive within a <composite query expression>"
+
 compositeQueryExpression
-    : compositeQueryExpression queryConjunction compositeQueryPrimary
-    | compositeQueryPrimary
+    : compositeQueryExpressionFocused
+    | compositeQueryExpressionAmbient
+    ;
+
+compositeQueryExpressionFocused
+    : compositeQueryExpressionFocused queryConjunction focusedLinearQueryStatement
+    | focusedLinearQueryStatement
+    ;
+
+compositeQueryExpressionAmbient
+    : compositeQueryExpressionAmbient queryConjunction ambientLinearQueryStatement
+    | ambientLinearQueryStatement
     ;
 
 queryConjunction
@@ -2301,8 +2318,8 @@ caseExpression
     ;
 
 caseAbbreviation
-    : NULLIF LEFT_PAREN valueExpression COMMA valueExpression RIGHT_PAREN
-    | COALESCE LEFT_PAREN valueExpression (COMMA valueExpression)+ RIGHT_PAREN
+    : NULLIF LEFT_PAREN valueExpression COMMA valueExpression RIGHT_PAREN   # nullIfExprAlt
+    | COALESCE LEFT_PAREN valueExpression (COMMA valueExpression)+ RIGHT_PAREN  # coalesceExprAlt
     ;
 
 caseSpecification
@@ -2540,11 +2557,11 @@ truthValue
 // 20.21 <numeric value expression>
 
 numericValueExpression
-    : sign = (PLUS_SIGN | MINUS_SIGN) numericValueExpression
-    | numericValueExpression operator = (ASTERISK | SOLIDUS) numericValueExpression
-    | numericValueExpression operator = (PLUS_SIGN | MINUS_SIGN) numericValueExpression
-    | valueExpressionPrimary
-    | numericValueFunction
+    : sign = (PLUS_SIGN | MINUS_SIGN) numericValueExpression                              #signedExprAlt2
+    | numericValueExpression operator = (ASTERISK | SOLIDUS) numericValueExpression       #multDivExprAlt2
+    | numericValueExpression operator = (PLUS_SIGN | MINUS_SIGN) numericValueExpression   #addSubtractExprAlt2
+    | valueExpressionPrimary                                                              #primaryExprAlt2
+    | numericValueFunction                                                                #numericValueFunctionExprAlt
     ;
 
 // 20.22 <numeric value function>
