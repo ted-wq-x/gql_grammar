@@ -324,8 +324,134 @@ dropSchemaStatement
 // 12.4 <insert graph statement>
 
 createGraphStatement
-    : CREATE (PROPERTY? GRAPH (IF NOT EXISTS)? | OR REPLACE PROPERTY? GRAPH) catalogGraphParentAndName (openGraphType | ofGraphType) graphSource?
+    : CREATE (PROPERTY? GRAPH (IF NOT EXISTS)? | OR REPLACE PROPERTY? GRAPH) catalogGraphParentAndName (propertyGraphContent | pgq_propertyGraphContent)
     ;
+
+//gql 的
+propertyGraphContent
+    : (openGraphType | ofGraphType) graphSource?
+    ;
+
+// 参考了spanner graph，有所改动，SQL/PGQ的
+pgq_propertyGraphContent
+    : pgq_nodeTables (pgq_edgeTables)?
+    ;
+
+pgq_nodeTables
+    : NODE TABLES pgq_elementList
+    ;
+
+pgq_edgeTables
+    : EDGE TABLES pgq_elementList
+    ;
+
+pgq_elementList
+    : LEFT_PAREN pgq_element (COMMA pgq_element)* RIGHT_PAREN
+    ;
+
+pgq_element
+    : pgq_elementName (AS pgq_Alias)? pgq_elementKeys (pgq_labelAndPropertiesList | pgq_elementProperties )? (pgq_dynamicLabel)? (pgq_dynamicProperties)?
+    ;
+
+pgq_Alias
+    : identifier
+    ;
+
+pgq_elementName
+    : identifier
+    ;
+
+pgq_elementKeys
+    : pgq_nodeElementKey | pgq_edgeElementKeys
+    ;
+
+pgq_nodeElementKey
+    : (pgq_elementKey)?
+    ;
+
+pgq_edgeElementKeys
+    : (pgq_elementKey)? pgq_sourceKey pgq_destinationKey
+    ;
+
+pgq_elementKey
+    : KEY pgq_columnNameList
+    ;
+
+pgq_sourceKey
+    : SOURCE KEY pgq_edgeColumnNameList REFERENCES pgq_elementAliasReference (pgq_nodeColumnNameList)?
+    ;
+
+pgq_destinationKey
+    : DESTINATION KEY pgq_edgeColumnNameList REFERENCES pgq_elementAliasReference (pgq_nodeColumnNameList)?
+    ;
+
+pgq_edgeColumnNameList
+    : pgq_columnNameList
+    ;
+
+pgq_nodeColumnNameList
+    : pgq_columnNameList
+    ;
+
+pgq_columnNameList
+    : LEFT_PAREN pg_columnName (COMMA pg_columnName)* RIGHT_PAREN
+    ;
+
+pg_columnName
+    : identifier
+    ;
+
+pgq_elementAliasReference
+    : identifier
+    ;
+
+pgq_labelAndPropertiesList
+    : pgq_labelAndProperties (COMMA pgq_labelAndProperties)*
+    ;
+
+pgq_labelAndProperties
+    : pgq_elementLabel (pgq_elementProperties)?
+    ;
+
+pgq_elementLabel
+    : LABEL labelName
+    | DEFAULT LABEL
+    ;
+
+pgq_elementProperties
+    : NO PROPERTIES
+    | pgq_propertiesAre
+    | pgq_derivedPropertyList
+    ;
+
+pgq_propertiesAre
+    : PROPERTIES (ARE)? ALL COLUMNS ( EXCEPT pgq_columnNameList)?
+    ;
+
+pgq_derivedPropertyList
+    : PROPERTIES LEFT_PAREN pgg_derivedProperty (COMMA pgg_derivedProperty)* RIGHT_PAREN
+    ;
+
+pgg_derivedProperty
+    : valueExpression (AS propertyName)?
+    ;
+
+pgq_dynamicLabel
+    : DYNAMIC LABEL LEFT_PAREN pgq_dynamicLabelColumnName RIGHT_PAREN
+    ;
+
+pgq_dynamicLabelColumnName
+    : identifier
+    ;
+
+pgq_dynamicProperties
+    : DYNAMIC PROPERTIES LEFT_PAREN pgq_dynamicPropertiesColumnName RIGHT_PAREN
+    ;
+
+pgq_dynamicPropertiesColumnName
+    : identifier
+    ;
+
 
 openGraphType
     : typed? ANY (PROPERTY? GRAPH)?
@@ -3118,6 +3244,7 @@ nonReservedWords
     | ONLY
     | ORDINALITY
     | PROPERTY
+    | PROPERTIES
     | READ
     | RELATIONSHIP
     | RELATIONSHIPS
@@ -3310,6 +3437,7 @@ ALL: 'ALL';
 ALL_DIFFERENT: 'ALL_DIFFERENT';
 AND: 'AND';
 ANY: 'ANY';
+ARE: 'ARE';
 ARRAY: 'ARRAY';
 AS: 'AS';
 ASC: 'ASC';
@@ -3341,6 +3469,7 @@ CHARACTERISTICS: 'CHARACTERISTICS';
 CLOSE: 'CLOSE';
 COALESCE: 'COALESCE';
 COLLECT_LIST: 'COLLECT_LIST';
+COLUMNS: 'COLUMNS';
 COMMIT: 'COMMIT';
 COPY: 'COPY';
 COS: 'COS';
@@ -3359,6 +3488,7 @@ DATETIME: 'DATETIME';
 DAY: 'DAY';
 DEC: 'DEC';
 DECIMAL: 'DECIMAL';
+DEFAULT: 'DEFAULT';
 DEGREES: 'DEGREES';
 DELETE: 'DELETE';
 DESC: 'DESC';
@@ -3369,6 +3499,7 @@ DOUBLE: 'DOUBLE';
 DROP: 'DROP';
 DURATION: 'DURATION';
 DURATION_BETWEEN: 'DURATION_BETWEEN';
+DYNAMIC: 'DYNAMIC';
 ELEMENT_ID: 'ELEMENT_ID';
 ELSE: 'ELSE';
 END: 'END';
@@ -3412,6 +3543,7 @@ INTEGER256: 'INTEGER256';
 INTERSECT: 'INTERSECT';
 INTERVAL: 'INTERVAL';
 IS: 'IS';
+KEY: 'KEY';
 LEADING: 'LEADING';
 LEFT: 'LEFT';
 LET: 'LET';
@@ -3457,10 +3589,12 @@ PERCENTILE_CONT: 'PERCENTILE_CONT';
 PERCENTILE_DISC: 'PERCENTILE_DISC';
 POWER: 'POWER';
 PRECISION: 'PRECISION';
+PROPERTIES: 'PROPERTIES';
 PROPERTY_EXISTS: 'PROPERTY_EXISTS';
 RADIANS: 'RADIANS';
 REAL: 'REAL';
 RECORD: 'RECORD';
+REFERENCES: 'REFERENCES';
 REMOVE: 'REMOVE';
 REPLACE: 'REPLACE';
 RESET: 'RESET';
@@ -3605,6 +3739,7 @@ SHORTEST: 'SHORTEST';
 SIMPLE: 'SIMPLE';
 SOURCE: 'SOURCE';
 TABLE: 'TABLE';
+TABLES: 'TABLES';
 TO: 'TO';
 TRAIL: 'TRAIL';
 TRANSACTION: 'TRANSACTION';
