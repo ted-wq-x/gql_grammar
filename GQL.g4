@@ -394,10 +394,10 @@ pgq_nodeColumnNameList
     ;
 
 pgq_columnNameList
-    : LEFT_PAREN pg_columnName (COMMA pg_columnName)* RIGHT_PAREN
+    : LEFT_PAREN pgq_columnName (COMMA pgq_columnName)* RIGHT_PAREN
     ;
 
-pg_columnName
+pgq_columnName
     : identifier
     ;
 
