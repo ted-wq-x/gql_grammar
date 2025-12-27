@@ -334,7 +334,7 @@ propertyGraphContent
 
 // 参考了spanner graph，有所改动，SQL/PGQ的
 pgq_propertyGraphContent
-    : pgq_nodeTables (pgq_edgeTables)?
+    : pgq_nodeTables pgq_edgeTables?
     ;
 
 pgq_nodeTables
@@ -350,7 +350,7 @@ pgq_elementList
     ;
 
 pgq_element
-    : pgq_elementName (AS pgq_Alias)? pgq_elementKeys (pgq_labelAndPropertiesList | pgq_elementProperties )? (pgq_dynamicLabel)? (pgq_dynamicProperties)?
+    : pgq_elementName (AS pgq_Alias)? pgq_elementKeys (pgq_labelAndPropertiesList | pgq_elementProperties )? pgq_dynamicLabel? pgq_dynamicProperties?
     ;
 
 pgq_Alias
@@ -366,11 +366,11 @@ pgq_elementKeys
     ;
 
 pgq_nodeElementKey
-    : (pgq_elementKey)?
+    : pgq_elementKey?
     ;
 
 pgq_edgeElementKeys
-    : (pgq_elementKey)? pgq_sourceKey pgq_destinationKey
+    : pgq_elementKey? pgq_sourceKey pgq_destinationKey
     ;
 
 pgq_elementKey
@@ -378,11 +378,11 @@ pgq_elementKey
     ;
 
 pgq_sourceKey
-    : SOURCE KEY pgq_edgeColumnNameList REFERENCES pgq_elementAliasReference (pgq_nodeColumnNameList)?
+    : SOURCE KEY pgq_edgeColumnNameList REFERENCES pgq_elementAliasReference pgq_nodeColumnNameList?
     ;
 
 pgq_destinationKey
-    : DESTINATION KEY pgq_edgeColumnNameList REFERENCES pgq_elementAliasReference (pgq_nodeColumnNameList)?
+    : DESTINATION KEY pgq_edgeColumnNameList REFERENCES pgq_elementAliasReference pgq_nodeColumnNameList?
     ;
 
 pgq_edgeColumnNameList
@@ -410,7 +410,7 @@ pgq_labelAndPropertiesList
     ;
 
 pgq_labelAndProperties
-    : pgq_elementLabel (pgq_elementProperties)?
+    : pgq_elementLabel pgq_elementProperties?
     ;
 
 pgq_elementLabel
@@ -425,7 +425,7 @@ pgq_elementProperties
     ;
 
 pgq_propertiesAre
-    : PROPERTIES (ARE)? ALL COLUMNS ( EXCEPT pgq_columnNameList)?
+    : PROPERTIES ARE? ALL COLUMNS ( EXCEPT pgq_columnNameList)?
     ;
 
 pgq_derivedPropertyList
