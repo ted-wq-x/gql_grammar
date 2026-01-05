@@ -406,7 +406,7 @@ pgq_elementAliasReference
     ;
 
 pgq_labelAndPropertiesList
-    : pgq_labelAndProperties (COMMA pgq_labelAndProperties)*
+    : pgq_labelAndProperties (pgq_labelAndProperties)*
     ;
 
 pgq_labelAndProperties
