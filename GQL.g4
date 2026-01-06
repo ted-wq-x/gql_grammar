@@ -356,9 +356,13 @@ pgq_element
 pgq_Alias
     : identifier
     ;
+// 额外支持的
+pgq_catalogObjectParentReference
+    : (objectName PERIOD)+
+    ;
 
 pgq_elementName
-    : identifier
+    : pgq_catalogObjectParentReference? identifier
     ;
 
 pgq_elementKeys
