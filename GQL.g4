@@ -7,6 +7,14 @@ options { caseInsensitive = true; }
 gqlProgram
     : programActivity sessionCloseCommand? EOF
     | sessionCloseCommand EOF
+    | showCommand sessionCloseCommand? EOF
+    ;
+
+// custom syntax: refer to nebula graph's synatx
+showCommand
+    : SHOW GRAPHS #showGraphs
+    | SHOW CREATE GRAPH catalogGraphParentAndName #showCreateGraph
+    | SHOW CURRENT_GRAPH # showCurrentGraph
     ;
 
 programActivity
@@ -3719,6 +3727,7 @@ ELEMENT: 'ELEMENT';
 ELEMENTS: 'ELEMENTS';
 FIRST: 'FIRST';
 GRAPH: 'GRAPH';
+GRAPHS: 'GRAPHS';
 GROUPS: 'GROUPS';
 KEEP: 'KEEP';
 LABEL: 'LABEL';
@@ -3740,6 +3749,7 @@ RELATIONSHIP: 'RELATIONSHIP';
 RELATIONSHIPS: 'RELATIONSHIPS';
 REPEATABLE: 'REPEATABLE';
 SHORTEST: 'SHORTEST';
+SHOW: 'SHOW';
 SIMPLE: 'SIMPLE';
 SOURCE: 'SOURCE';
 TABLE: 'TABLE';
