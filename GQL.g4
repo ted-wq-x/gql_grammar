@@ -8,6 +8,7 @@ gqlProgram
     : programActivity sessionCloseCommand? EOF
     | sessionCloseCommand EOF
     | showCommand sessionCloseCommand? EOF
+    | explainCommand sessionCloseCommand? EOF
     ;
 
 // custom syntax: refer to nebula graph's synatx
@@ -15,6 +16,11 @@ showCommand
     : SHOW GRAPHS #showGraphs
     | SHOW CREATE GRAPH catalogGraphParentAndName #showCreateGraph
     | SHOW CURRENT_GRAPH # showCurrentGraph
+    ;
+
+// explain synatx: refer to duckdb's synatx
+explainCommand
+    : EXPLAIN ANALYZE? procedureSpecification
     ;
 
 programActivity
