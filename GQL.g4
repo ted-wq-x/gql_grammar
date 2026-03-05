@@ -2655,6 +2655,7 @@ listValueExpression
 listValueFunction
     : trimListFunction
     | elementsFunction
+    | listContainsFunction
     ;
 
 trimListFunction
@@ -2663,6 +2664,10 @@ trimListFunction
 
 elementsFunction
     : ELEMENTS LEFT_PAREN pathValueExpression RIGHT_PAREN
+    ;
+
+listContainsFunction
+    : LIST_CONTAINS LEFT_PAREN listValueExpression COMMA valueExpression RIGHT_PAREN
     ;
 
 // 20.17 <list value constructor>
@@ -3568,6 +3573,7 @@ LET: 'LET';
 LIKE: 'LIKE';
 LIMIT: 'LIMIT';
 LIST: 'LIST';
+LIST_CONTAINS: 'LIST_CONTAINS';
 LN: 'LN';
 LOCAL: 'LOCAL';
 LOCAL_DATETIME: 'LOCAL_DATETIME';
