@@ -2656,6 +2656,13 @@ listValueFunction
     : trimListFunction
     | elementsFunction
     | listContainsFunction
+    | lambdaFunction
+    ;
+
+lambdaFunction
+    : reduceLambdaFunction
+    | transformLambdaFunction
+    | filterLambdaFunction
     ;
 
 trimListFunction
@@ -2670,6 +2677,29 @@ listContainsFunction
     : LIST_CONTAINS LEFT_PAREN listValueExpression COMMA valueExpression RIGHT_PAREN
     ;
 
+transformLambdaFunction
+    : TRANSFORM LEFT_PAREN listValueExpression COMMA lambdaExpression RIGHT_PAREN
+    ;
+
+filterLambdaFunction
+    : FILTER LEFT_PAREN listValueExpression COMMA lambdaExpression RIGHT_PAREN
+    ;
+
+reduceLambdaFunction
+    : REDUCE LEFT_PAREN listValueExpression COMMA lambdaExpression (COMMA valueExpression)? RIGHT_PAREN
+    ;
+
+lambdaExpression
+    : LAMBDA lambdaParameterNameList COLON valueExpression
+    ;
+
+lambdaParameterNameList
+    : lambdaParameterName (COMMA lambdaParameterName)*
+    ;
+
+lambdaParameterName
+    : identifier
+    ;
 // 20.17 <list value constructor>
 
 listValueConstructor
@@ -3570,6 +3600,7 @@ KEY: 'KEY';
 LEADING: 'LEADING';
 LEFT: 'LEFT';
 LET: 'LET';
+LAMBDA: 'LAMBDA';
 LIKE: 'LIKE';
 LIMIT: 'LIMIT';
 LIST: 'LIST';
@@ -3621,6 +3652,7 @@ RECORD: 'RECORD';
 REFERENCES: 'REFERENCES';
 REMOVE: 'REMOVE';
 REPLACE: 'REPLACE';
+REDUCE: 'REDUCE';
 RESET: 'RESET';
 RETURN: 'RETURN';
 RIGHT: 'RIGHT';
@@ -3652,6 +3684,7 @@ THEN: 'THEN';
 TIME: 'TIME';
 TIMESTAMP: 'TIMESTAMP';
 TRAILING: 'TRAILING';
+TRANSFORM: 'TRANSFORM';
 TRIM: 'TRIM';
 TYPED: 'TYPED';
 UBIGINT: 'UBIGINT';
