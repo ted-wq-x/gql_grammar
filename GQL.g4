@@ -2406,6 +2406,15 @@ valueExpressionPrimary
     | element_idFunction
     | letValueExpression
     | bindingVariableReference
+    | extentedFunction
+    ;
+
+extentedFunction
+    : toTimeStampFunction
+    ;
+
+toTimeStampFunction
+    : TO_TIMESTAMP LEFT_PAREN valueExpression RIGHT_PAREN
     ;
 
 parenthesizedValueExpression
@@ -3686,6 +3695,7 @@ TIMESTAMP: 'TIMESTAMP';
 TRAILING: 'TRAILING';
 TRANSFORM: 'TRANSFORM';
 TRIM: 'TRIM';
+TO_TIMESTAMP: 'TO_TIMESTAMP';
 TYPED: 'TYPED';
 UBIGINT: 'UBIGINT';
 UINT: 'UINT';
