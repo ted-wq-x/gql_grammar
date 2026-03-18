@@ -2413,7 +2413,19 @@ extentedFunction
     : toTimeStampFunction
     | headFunction
     | lastFunction
-    |
+    | extractFunction
+    ;
+
+extractFunction
+    : EXTRACT LEFT_PAREN extract_list RIGHT_PAREN
+    ;
+
+extract_list
+    : extract_arg FROM valueExpression
+    ;
+
+extract_arg
+    : identifier
     ;
 
 headFunction
@@ -3579,6 +3591,7 @@ END: 'END';
 EXCEPT: 'EXCEPT';
 EXISTS: 'EXISTS';
 EXP: 'EXP';
+EXTRACT: 'EXTRACT';
 FILTER: 'FILTER';
 FINISH: 'FINISH';
 FLOAT: 'FLOAT';
