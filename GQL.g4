@@ -2411,6 +2411,17 @@ valueExpressionPrimary
 
 extentedFunction
     : toTimeStampFunction
+    | headFunction
+    | lastFunction
+    |
+    ;
+
+headFunction
+    : HEAD LEFT_PAREN valueExpression RIGHT_PAREN
+    ;
+
+lastFunction
+    : LAST LEFT_PAREN valueExpression RIGHT_PAREN
     ;
 
 toTimeStampFunction
@@ -3581,6 +3592,7 @@ FOR: 'FOR';
 FROM: 'FROM';
 GROUP: 'GROUP';
 HAVING: 'HAVING';
+HEAD: 'HEAD';
 HOME_GRAPH: 'HOME_GRAPH';
 HOME_PROPERTY_GRAPH: 'HOME_PROPERTY_GRAPH';
 HOME_SCHEMA: 'HOME_SCHEMA';
