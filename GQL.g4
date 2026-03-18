@@ -2425,7 +2425,7 @@ extract_list
     ;
 
 extract_arg
-    : identifier
+    : characterStringLiteral
     ;
 
 headFunction
