@@ -2343,6 +2343,33 @@ valueFunction
     | durationValueFunction
     | characterOrByteStringFunction
     | listValueFunction
+    | vectorValueFunction
+    | fullTextValueFunction
+    ;
+
+vectorValueFunction
+    : vectorFunctionType LEFT_PAREN valueExpression COMMA valueExpression RIGHT_PAREN
+    ;
+
+vectorFunctionType
+    : L2_DISTANCE
+    | INNER_PRODUCT
+    | L2_DISTANCE_APPROXIMATE
+    | INNER_PRODUCT_APPROXIMATE
+    ;
+
+fullTextValueFunction
+    : fullTextFunctionType LEFT_PAREN valueExpression COMMA valueExpression RIGHT_PAREN
+    ;
+
+fullTextFunctionType
+    : MATCH
+    | MATCH_ANY
+    | MATCH_ALL
+    | MATCH_PHRASE
+    | MATCH_PHRASE_PREFIX
+    | MATCH_REGEXP
+    | MATCH_PHRASE_EDGE
     ;
 
 booleanValueExpression
@@ -3648,7 +3675,17 @@ LOG_KW: 'LOG';
 LOG10: 'LOG10';
 LOWER: 'LOWER';
 LTRIM: 'LTRIM';
+L2_DISTANCE: 'L2_DISTANCE';
+INNER_PRODUCT: 'INNER_PRODUCT';
+L2_DISTANCE_APPROXIMATE: 'L2_DISTANCE_APPROXIMATE';
+INNER_PRODUCT_APPROXIMATE: 'INNER_PRODUCT_APPROXIMATE';
 MATCH: 'MATCH';
+MATCH_ANY: 'MATCH_ANY';
+MATCH_ALL: 'MATCH_ALL';
+MATCH_PHRASE: 'MATCH_PHRASE';
+MATCH_PHRASE_PREFIX: 'MATCH_PHRASE_PREFIX';
+MATCH_REGEXP: 'MATCH_REGEXP';
+MATCH_PHRASE_EDGE: 'MATCH_PHRASE_EDGE';
 MAX: 'MAX';
 MIN: 'MIN';
 MINUTE: 'MINUTE';
