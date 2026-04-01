@@ -2512,6 +2512,7 @@ generalValueSpecification
 
 dynamicParameterSpecification
     : GENERAL_PARAMETER_REFERENCE
+    | QUESTION_MARK
     ;
 
 // 20.5 <let value expression>
