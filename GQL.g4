@@ -2345,7 +2345,12 @@ valueFunction
     | listValueFunction
     | vectorValueFunction
     | fullTextValueFunction
+    | labelsFunction
     ;
+
+labelsFunction
+	: LABELS LEFT_PAREN elementVariableReference RIGHT_PAREN
+	;
 
 vectorValueFunction
     : vectorFunctionType LEFT_PAREN valueExpression COMMA valueExpression RIGHT_PAREN
